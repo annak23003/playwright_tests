@@ -1,7 +1,7 @@
 const { test, expect } = require('@playwright/test');
 
 //test.describe.configure({ mode: 'serial' });
-test.describe.configure('Open guru website', () => {
+test.describe('Open guru website', () => {
 
     test.beforeEach(async ({ page }) => {
         await page.goto('https://www.guru99.com/');
@@ -60,6 +60,7 @@ test.describe.configure('Open guru website', () => {
     test('test5', async ({ page }) => {
         const input = page.locator('input.gsc-input');
 
+        await page.mouse.move(100, 100); //added mousemove
         await input.click();
         await input.fill('sap');
         await input.clear();

@@ -1,5 +1,9 @@
+import path from 'path';
+
 // @ts-check
 const { defineConfig, devices } = require('@playwright/test');
+
+export const STORAGE_STATE = path.join(__dirname, 'some_data/auth/user.json')
 
 /**
  * Read environment variables from file.
@@ -29,13 +33,29 @@ module.exports = defineConfig({
     viewport: {width: 1280, height: 720},
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-
+    baseURL: process.env.ENV_URL,
+    // baseURL: process.env.URL === '1' ? 'https://www.test.guru99.com' : 'https://www.guru99.com',
+    locale: 'de-DE',
+    timezoneId: 'Europe/Berlin',
+    permissions: ['geolocation'],
+    geolocation: { longitude: 52.150002, latitude: 10.333333 },
+    userAgent: 'blah-blah',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
   },
 
   /* Configure projects for major browsers */
   projects: [
+    {
+      name: 'log_in',
+      testMatch: '**/*.setup.js'
+    },
+    {
+      name: 'logged in',
+      testMatch: 'newborn.spec.js',
+      dependencies: ['log_in'],
+      use: {storageState: STORAGE_STATE, },
+    },
     {
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] }

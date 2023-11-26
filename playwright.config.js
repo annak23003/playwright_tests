@@ -35,10 +35,10 @@ module.exports = defineConfig({
     // baseURL: 'http://127.0.0.1:3000',
     baseURL: process.env.ENV_URL,
     // baseURL: process.env.URL === '1' ? 'https://www.test.guru99.com' : 'https://www.guru99.com',
-    locale: 'de-DE',
-    timezoneId: 'Europe/Berlin',
+    locale: 'en-GB',
+    timezoneId: 'Europe/London',
+    geolocation: { longitude: 51.468587, latitude: -0.104373 },
     permissions: ['geolocation'],
-    geolocation: { longitude: 52.150002, latitude: 10.333333 },
     userAgent: 'blah-blah',
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',

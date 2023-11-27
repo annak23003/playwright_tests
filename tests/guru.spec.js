@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const exp = require('constants');
 
 //test.describe.configure({ mode: 'serial' });
 test.describe('Open guru website', () => {
@@ -16,7 +17,8 @@ test.describe('Open guru website', () => {
         await expect(page.getByRole('heading', { name: 'SAP' }))
         .toBeVisible();
         await page.getByRole('link', { name: '➤ SAP Beginner' }).click();
-        await page.getByRole('button', { name: 'AGREE' }).click();
+        //await page.getByRole('button', { name: 'AGREE' }).click();
+        await expect(page.locator('#post-478 > div > header > h1')).toBeVisible();
     });
 
     test('test software', async ({ page }) => {
@@ -61,9 +63,10 @@ test.describe('Open guru website', () => {
         const input = page.locator('input.gsc-input');
 
         await page.mouse.move(100, 100); //added mousemove
-        await page.locator('div.g-content').screenshot({ path: 'screenshots/header_with_search.png'});
-        await expect(page).toHaveScreenshot('screenshots-main-page-screenshot.png');
-        await input.click();
+        await page.waitForTimeout(2000);
+        await page.locator('div.g-content').screenshot({ path: 'screenshots/header_with_search.png' })
+        await expect(page).toHaveScreenshot('screenshots-main-page-snapshot.png')
+        await input.click()
         await input.fill('sap');
         await page.screenshot({ path: 'screenshots/sap_in_search_input.png', fullPage: false });
         await input.clear();

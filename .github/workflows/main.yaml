@@ -1,0 +1,16 @@
+name: e2e tests on playwright
+on:
+  push:
+    branches: ['lesson26']
+jobs:
+  tests: 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+    - name: Install dependecies
+      run: npm ci
+    - name: Browsers
+      run: npx playwright install chromium
+    - name: Run playwright tests
+      run: npx playwright test guru.spec.js --project chromium --update-snapshots

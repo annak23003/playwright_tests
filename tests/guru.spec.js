@@ -61,9 +61,10 @@ test.describe('Open guru website', () => {
         const input = page.locator('input.gsc-input');
 
         await page.mouse.move(100, 100); //added mousemove
-        await page.locator('div.g-content').screenshot({ path: 'screenshots/header_with_search.png'});
-        await expect(page).toHaveScreenshot('screenshots-main-page-screenshot.png');
-        await input.click();
+        await page.waitForTimeout(2000);
+        await page.locator('div.g-content').screenshot({ path: 'screenshots/header_with_search.png' })
+        await expect(page).toHaveScreenshot('screenshots-main-page-snapshot.png')
+        await input.click()
         await input.fill('sap');
         await page.screenshot({ path: 'screenshots/sap_in_search_input.png', fullPage: false });
         await input.clear();

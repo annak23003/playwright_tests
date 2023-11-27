@@ -1,4 +1,5 @@
 const { test, expect } = require('@playwright/test');
+const exp = require('constants');
 
 //test.describe.configure({ mode: 'serial' });
 test.describe('Open guru website', () => {
@@ -16,7 +17,8 @@ test.describe('Open guru website', () => {
         await expect(page.getByRole('heading', { name: 'SAP' }))
         .toBeVisible();
         await page.getByRole('link', { name: '➤ SAP Beginner' }).click();
-        await page.getByRole('button', { name: 'AGREE' }).click();
+        //await page.getByRole('button', { name: 'AGREE' }).click();
+        await expect(page.locator('#post-478 > div > header > h1')).toBeVisible();
     });
 
     test('test software', async ({ page }) => {

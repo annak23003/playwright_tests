@@ -1,3 +1,4 @@
+import { configDotenv } from 'dotenv';
 import path from 'path';
 
 // @ts-check
@@ -9,7 +10,11 @@ export const STORAGE_STATE = path.join(__dirname, 'some_data/auth/user.json')
  * Read environment variables from file.
  * https://github.com/motdotla/dotenv
  */
-// require('dotenv').config();
+require('dotenv').config();
+
+configDotenv({
+  path: './env/.env.local'
+})
 
 /**
  * @see https://playwright.dev/docs/test-configuration
@@ -33,8 +38,8 @@ module.exports = defineConfig({
     viewport: {width: 1280, height: 720},
     /* Base URL to use in actions like `await page.goto('/')`. */
     // baseURL: 'http://127.0.0.1:3000',
-    baseURL: 'https://www.guru99.com',
-    //baseURL: process.env.ENV_URL,
+    //baseURL: 'https://www.guru99.com',
+    baseURL: process.env.ENV_URL,
     // baseURL: process.env.URL === '1' ? 'https://www.test.guru99.com' : 'https://www.guru99.com',
     locale: 'en-GB',
     timezoneId: 'Europe/London',

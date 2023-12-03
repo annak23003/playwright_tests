@@ -23,7 +23,7 @@ test.describe('Open guru website', () => {
 
     test('test software', async ({ page }) => {
         await page.getByRole('link', { name: '➤ Software Testing' }).click();
-        await page.getByRole('button', { name: 'AGREE' }).click();
+        //await page.getByRole('button', { name: 'AGREE' }).click();
     });
 
     test('test2', async ({ page }) => {

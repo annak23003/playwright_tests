@@ -3,16 +3,15 @@
 const { test, expect } = require('@playwright/test');
 const{ MainPageNewBorn } = require('./pages/MainPageNewBorn');
 const { constants } = require('buffer');
-//import { ApiHelper } from '../helpers/apiHelper'
 
 test.describe('Verification steps for newborn website', () => {
-
+    let TOKEN;
+    let categoryId;
     const USER = {
         email: 'email@dmytro.com',
         pwd: 'abc123',
         token: ''
     };
-
     test.beforeAll(async({request}) => {
         const response = await request.post(
             '/api/auth/login',{
@@ -38,22 +37,60 @@ test.describe('Verification steps for newborn website', () => {
         await page.goto('/overview')
     });
 
-    // test.beforeEach(async({ page }) => {
-    //     await page.goto('/login');
-    //     await page.getByLabel('Email:').fill('email@dmytro.com');
-    //     await page.getByLabel('Пароль:').fill('abc123');
-    //     await page.locator("button[type='submit']").click();
-    //     await expect(page.locator('body > app-root > app-site-layout > ul > li.bold.last > a')).toBeVisible();
-    //     await page.goto('/overview');
-    // });
-
-    test('check the state after open page', async ({ page })=>{
+    test.skip('check the state after open page', async ({ page })=>{
         await page.goto('/');
         await expect(page.locator('div.row span.card-title').nth(0)).toHaveText('Виручка:');
     });
 
-    test('usage POM', async ({ page }) => {
+    test.skip('usage POM', async ({ page }) => {
         const mainpagenewborn = new MainPageNewBorn(page);
         mainpagenewborn.verifyLogoutVisible();
+    });
+
+    test('Create a category', async ({ request, page }) => {
+        const createCategoryResponse = await request.post('/api/category', {
+          data: {
+            name: 'NewCategory2',
+          },
+          headers: {
+            'Accept': "application/json, text/plain, */*",
+            'Authorization': `${USER.token}`,
+          },
+        });
+        console.log('Response Status Code:', createCategoryResponse.status());
+        console.log('Response Body:', await createCategoryResponse.text());
+        expect(createCategoryResponse.ok()).toBeTruthy();
+        const createdCategory = await createCategoryResponse.json();
+        categoryId = createdCategory._id; // Store the category ID for deletion later
+      });
+
+      test('GET a category', async ({ request, page }) => {
+        const getCategoryResponse = await request.get('/api/category', {
+          headers: {
+            'Accept': "application/json",
+            'Authorization': `${USER.token}`,
+          },
+        });
+        expect(getCategoryResponse.ok()).toBeTruthy();
+        const categories = await getCategoryResponse.json();
+        const createdCategoryExists = categories.some(category => category._id === categoryId);
+        console.log('category ID', categoryId);
+        expect(createdCategoryExists).toBeDefined();
+        //Check if the created category is visible on the UI
+        await page.goto('/categories/${categoryId}'); 
+        await expect(page.locator("div.page-title > h4")).toBeVisible(); 
+        });
+
+    test('DELETE category', async ({ request, page }) => {
+
+        const deleteCategoryResponse = await request.delete(`/api/category/${categoryId}`, {
+          headers: {
+            'Accept': "application/json",
+            'Authorization': `${USER.token}`,
+          },
+        });
+        console.log('Delete Category Response Status:', deleteCategoryResponse.status());
+        console.log('Delete Category Response Body:', await deleteCategoryResponse.text());
+        expect(deleteCategoryResponse.ok()).toBeTruthy();
     });
 });

@@ -5,7 +5,6 @@ const{ MainPageNewBorn } = require('./pages/MainPageNewBorn');
 const { constants } = require('buffer');
 
 test.describe('Verification steps for newborn website', () => {
-    let TOKEN;
     let categoryId;
     const USER = {
         email: 'email@dmytro.com',
@@ -62,9 +61,9 @@ test.describe('Verification steps for newborn website', () => {
         expect(createCategoryResponse.ok()).toBeTruthy();
         const createdCategory = await createCategoryResponse.json();
         categoryId = createdCategory._id; // Store the category ID for deletion later
-      });
+    });
 
-      test('GET a category', async ({ request, page }) => {
+    test('GET a category', async ({ request, page }) => {
         const getCategoryResponse = await request.get('/api/category', {
           headers: {
             'Accept': "application/json",
@@ -79,10 +78,9 @@ test.describe('Verification steps for newborn website', () => {
         //Check if the created category is visible on the UI
         await page.goto('/categories/${categoryId}'); 
         await expect(page.locator("div.page-title > h4")).toBeVisible(); 
-        });
+    });
 
     test('DELETE category', async ({ request, page }) => {
-
         const deleteCategoryResponse = await request.delete(`/api/category/${categoryId}`, {
           headers: {
             'Accept': "application/json",

@@ -9,9 +9,13 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.39.0",
-    "@types/node": "^20.9.0"
+    "@types/node": "^20.9.0",
+    "axios": "^1.6.2",
+    "mocha": "^10.2.0",
+    "newman": "^6.0.0"
   },
   "dependencies": {
+    "chai": "^4.3.10",
     "dotenv": "^16.3.1"
   }
 }

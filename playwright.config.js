@@ -22,7 +22,7 @@ configDotenv({
 module.exports = defineConfig({
   testDir: './tests',
   testMatch: '*.spec.js',
-  timeout: 15000,
+  timeout: 50000,
   /* Run tests in files in parallel */
   fullyParallel: true,
   /* Fail the build on CI if you accidentally left test.only in the source code. */

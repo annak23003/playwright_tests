@@ -1,7 +1,8 @@
 name: CI API tests
 on:
   pull_request:
-    branches: ['api_workflow_lesson30']
+    branches: 
+    - api_workflow_lesson30
 jobs:
   tests: 
     runs-on: ubuntu-latest

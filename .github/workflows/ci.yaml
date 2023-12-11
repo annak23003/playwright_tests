@@ -1,0 +1,15 @@
+name: CI API tests
+on:
+  pull_request:
+    branches: ['api_workflow_lesson30']
+jobs:
+  tests: 
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - uses: actions/setup-node@v3
+    - name: Install dependecies
+      run: npm ci
+    - name: Run playwright tests
+      run: npm run api_tests
+    

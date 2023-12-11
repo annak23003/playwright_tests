@@ -1,16 +1,20 @@
 //import axios from 'axios'
 const axios = require('axios');
 const {expect} = require('chai')
+const data = require('../api_requests/data/dummy_data.json')
+const fs = require('fs-extra');
+const { URLSearchParams } = require('url');
         
-describe('actions for dummy website', async() => {
-    let baseUrl = 'https://dummyjson.com/'
+describe('actions for users on dummy website', async() => {
     let userId = '';
     let userName;
+    let userLName;
     let userPwd;
     let token;
+    let token_value;
 
-    it('Create user', async() => {
-        const createUser = await axios.post(`${baseUrl}/users/add`,
+    it.skip('Create user', async() => {
+        const createUser = await axios.post(`${data.baseUrl}/users/add`,
         {
             'firstName': 'Muhammad',
             'lastName': 'Ovi',
@@ -25,68 +29,56 @@ describe('actions for dummy website', async() => {
         userId = createUser.data.id;
     });
 
-    it('get user by id', async () => {
-        const getUser = await axios.get(`${baseUrl}/users/1`)
-        console.log(getUser.data);
-        userName = getUser.data.username;
-        userPwd = getUser.data.password;
-    });
-
-    it('Getting credentials', async() =>{
-        const getTokenData = await axios.post(`${baseUrl}/auth/login`,
-        {
-            'username': userName,
-            'password': userPwd,
-            expiresInMins: 30
-        },
-        {
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        //console.log(getTokenData.data);
-        token = getTokenData.data.token;
-    });
-
-//     fetch('https://dummyjson.com/products/add', {
-//   method: 'POST',
-//   headers: { 'Content-Type': 'application/json' },
-//   body: JSON.stringify({
-//     title: 'BMW Pencil',
-//     /* other product data */
-//   })
-// })
-// .then(res => res.json())
-// .then(console.log);
-            
-
-    it('Create a product', async () => {
-        const createProduct = await axios.post(`${baseUrl}/products/add`,
+    it.skip('Create a product', async () => {
+        const createProduct = await axios.post(`${data.baseUrl}/products/add`,
         {
             'title': 'MyOwnProduct'
         },
         {
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
+                'Authorization': `Bearer ${data.token}`
             }
         })
         console.log(createProduct.data);
         expect(createProduct.status).equal(200);
     });
 
+    it('Get users by search params', async() => {
+        //fetch('https://dummyjson.com/users/filter?key=hair.color&value=Brown')
+        const params = new URLSearchParams([['key', 'hair.color'], ['value', 'Brown']])
+        const getUserByParams = await axios.get(`${data.baseUrl}/users/filter`, {params})
+        expect(getUserByParams.status).equal(200);
+        //console.log(getUserByParams.data.users[2]);
+        userName = getUserByParams.data.users[2].firstName;
+        userId = getUserByParams.data.users[2].id;
+        userLName = getUserByParams.data.users[2].lastName;
+        //console.log(userName);
+        //Arely
+    })
+
+    it('Get user by id', async () => {
+        const getUser = await axios.get(`${data.baseUrl}/users/${userId}`);
+        //console.log(getUser.data);
+        expect(userName).equal(getUser.data.firstName);
+        expect(userLName).equal(getUser.data.lastName);
+    })
+
 // put - replacing full list of data, patch - can replace 1+ fields
     it.skip('update user data', async () => {
-        const updateUserData = await axios.patch(`${baseUrl}/users/add`, 
+        const updateUserData = await axios.patch(`${data.baseUrl}/users/1`, 
         {
-            'firstName': 'emailTut',
-            'lastName': 'abc123',
+            'firstName': 'Marko',
+            'lastName': 'Polo',
         },
         {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${data.token}`
             }
-        })
+        });
         console.log(updateUserData.statusText);
+        console.log(updateUserData.status);
+        console.log(updateUserData.data);
     });
 });

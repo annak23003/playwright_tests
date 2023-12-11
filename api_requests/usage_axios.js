@@ -64,7 +64,6 @@ describe('actions for users on dummy website', async() => {
         expect(userLName).equal(getUser.data.lastName);
     })
 
-// put - replacing full list of data, patch - can replace 1+ fields
     it.skip('update user data', async () => {
         const updateUserData = await axios.patch(`${data.baseUrl}/users/1`, 
         {

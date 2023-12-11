@@ -2,6 +2,7 @@ name: CI API tests
 on:
   pull_request:
     branches: 
+    - main
     - api_workflow_lesson30
 jobs:
   tests: 

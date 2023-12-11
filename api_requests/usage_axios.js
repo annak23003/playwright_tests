@@ -59,7 +59,6 @@ describe('actions for users on dummy website', async() => {
 
     it('Get user by id', async () => {
         const getUser = await axios.get(`${data.baseUrl}/users/${userId}`);
-        //console.log(getUser.data);
         expect(userName).equal(getUser.data.firstName);
         expect(userLName).equal(getUser.data.lastName);
     })

@@ -9,7 +9,6 @@ describe('actions for users on dummy website', async() => {
     let userId = '';
     let userName;
     let userLName;
-    let userPwd;
     let token;
     let token_value;
 
